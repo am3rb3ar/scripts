@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Smart nvim wrapper that uses nvim-min config when called from Claude Code.
+# Smart nvim wrapper that uses nvim-min config on certain applications.
+# Claude coded all of this - you think I'm good at bash?
 
 LOG_FILE="${NVIM_WRAPPER_LOG_FILE:-/tmp/nvim-wrapper.log}"
 
@@ -59,17 +60,13 @@ has_ancestor_process() {
   return 1
 }
 
-
-mode="default"
+app_name=""
 
 if has_ancestor_process opencode \
-  || has_ancestor_process claude
+  || has_ancestor_process claude \
+  || [[ "${1:-}" == */fish.*/command-line.fish ]]
 then
-  mode="nvim-min"
+  app_name="nvim-min"
 fi
 
-if [[ "$mode" == "nvim-min" ]]; then
-  NVIM_APPNAME=nvim-min exec nvim "$@"
-else
-  exec nvim "$@"
-fi
+NVIM_APPNAME="$app_name" exec nvim "$@"

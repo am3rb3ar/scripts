@@ -21,11 +21,11 @@ get_launcher() {
 }
 
 log_invocation() {
-  local mode="$1"
+  # local mode="$1"
   shift
   {
     printf '=== %s ===\n' "$(date '+%Y-%m-%d %H:%M:%S %z')"
-    printf 'mode: %s\n' "$mode"
+    # printf 'mode: %s\n' "$mode"
     printf 'pid: %s\n' "$$"
     printf 'ppid: %s\n' "$PPID"
     printf 'cwd: %s\n' "$PWD"
@@ -62,7 +62,7 @@ has_ancestor_process() {
 
 app_name=""
 
-if has_ancestor_process opencode \
+if [[ "${OPENCODE:-}" == "1" ]] \
   || has_ancestor_process claude \
   || [[ "${1:-}" == */fish.*/command-line.fish ]]
 then
